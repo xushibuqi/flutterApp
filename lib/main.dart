@@ -35,24 +35,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   @override
   void initState() {
     super.initState();
     // 在初始化时调用获取城市信息的方法
     fetchCityInformation();
-
   }
 
   Future<void> fetchCityInformation() async {
     try {
-       getCityFromCoordinates();
+      getCityFromCoordinates();
       // 在这里可以根据需要更新 UI 或执行其他操作
     } catch (e) {
       // 处理异常
       print('Error fetching city information: $e');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
