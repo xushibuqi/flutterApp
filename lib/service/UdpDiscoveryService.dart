@@ -18,25 +18,29 @@ class UdpDiscoveryService {
   void start() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     discoveryMessage = prefs.getString('device') ?? '';
-
-    //   为了在pc上 多个ip拿出在用的IP地址 目前规则是192.168.3
-    // 定义匹配的正则表达式
-    RegExp regex = RegExp(r'^192\.168\.3\.\d{1,3}$');
     InternetAddress ip = InternetAddress.anyIPv4;
-    // 获取本地所有的网络接口
-    NetworkInterface.list().then((interfaces) {
-      // 遍历每个网络接口
-      interfaces.forEach((interface) {
-        // 遍历每个地址
-        interface.addresses.forEach((address) {
-          // 检查地址是否符合条件
-          if (address.type == InternetAddressType.IPv4 &&
-              regex.hasMatch(address.address)) {
-            ip = address;
-          }
+    //   为了在pc上 多个ip拿出在用的IP地址 目前规则是192.168.3
+    if (Platform.isWindows){
+      // 定义匹配的正则表达式
+      RegExp regex = RegExp(r'^192\.168\.3\.\d{1,3}$');
+
+      // 获取本地所有的网络接口
+      NetworkInterface.list().then((interfaces) {
+        // 遍历每个网络接口
+        interfaces.forEach((interface) {
+          // 遍历每个地址
+          interface.addresses.forEach((address) {
+            // 检查地址是否符合条件
+            if (address.type == InternetAddressType.IPv4 &&
+                regex.hasMatch(address.address)) {
+              ip = address;
+            }
+          });
         });
       });
-    });
+    }
+
+
     _socket = await RawDatagramSocket.bind(ip, port,);
     _socket?.listen((event) {
       Datagram? datagram = _socket?.receive();
