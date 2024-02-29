@@ -30,7 +30,7 @@ void showWeatherOptions(BuildContext context) {
             CustomIconButton(
               icon: FontAwesomeIcons.arrowRight,
               onPressed: () {
-                AppRouter.router.navigateTo(context, '/second/real',
+                AppRouter.router.navigateTo(context, '/weather/real',
                     transition: TransitionType.fadeIn);
               },
             ),
@@ -45,7 +45,7 @@ void showWeatherOptions(BuildContext context) {
             CustomIconButton(
               icon: FontAwesomeIcons.cloud,
               onPressed: () {
-                AppRouter.router.navigateTo(context, '/second/cloud',
+                AppRouter.router.navigateTo(context, '/weather/cloud',
                     transition: TransitionType.fadeIn);
               },
             ),
@@ -60,7 +60,7 @@ void showWeatherOptions(BuildContext context) {
             CustomIconButton(
               icon: FontAwesomeIcons.sun,
               onPressed: () {
-                AppRouter.router.navigateTo(context, '/second/sun',
+                AppRouter.router.navigateTo(context, '/weather/sun',
                     transition: TransitionType.fadeIn);
               },
             ),
@@ -75,7 +75,7 @@ void showWeatherOptions(BuildContext context) {
             CustomIconButton(
               icon: FontAwesomeIcons.snowflake,
               onPressed: () {
-                AppRouter.router.navigateTo(context, '/second/snow',
+                AppRouter.router.navigateTo(context, '/weather/snow',
                     transition: TransitionType.fadeIn);
               },
             ),
@@ -90,7 +90,7 @@ void showWeatherOptions(BuildContext context) {
             CustomIconButton(
               icon: FontAwesomeIcons.cloudShowersHeavy,
               onPressed: () {
-                AppRouter.router.navigateTo(context, '/second/rain',
+                AppRouter.router.navigateTo(context, '/weather/rain',
                     transition: TransitionType.fadeIn);
               },
             ),

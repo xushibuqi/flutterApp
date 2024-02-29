@@ -2,14 +2,14 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../style/weather.dart';
+import '../style/weatherStyle.dart';
 import '../utils/method.dart';
 
-class BlCubitCounterPage1 extends StatelessWidget {
+class buildWeather extends StatelessWidget {
 
   String cloud;
 
-  BlCubitCounterPage1({super.key, required this.cloud});
+  buildWeather({super.key, required this.cloud});
 
   Future<Map<String, String>> getAddress() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -30,7 +30,6 @@ class BlCubitCounterPage1 extends StatelessWidget {
           Map<String, String> map = snapshot.data ?? {};
           String adcode = map["adcode"] ?? "";
           String address = map["address"] ?? "";
-
           // 获取天气信息
           return FutureBuilder<Map<String, dynamic>>(
             future: getWeatherByCity(adcode),

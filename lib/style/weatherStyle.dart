@@ -23,7 +23,7 @@ WrapperScene weather(Map<String, dynamic> weatherMap, String address,
   if (cloud == "real") {
     weatherToday = wMap["weather"];
   } else if (cloud == "cloud") {
-    weatherToday = "阴";
+    weatherToday = "云";
   } else if (cloud == "sun") {
     weatherToday = "晴";
   } else if (cloud == "rain") {
@@ -36,7 +36,7 @@ WrapperScene weather(Map<String, dynamic> weatherMap, String address,
     return rain(weatherInfo, context);
   } else if (weatherToday.contains("雪")) {
     return snow(weatherInfo, context);
-  } else if (weatherToday.contains("阴")) {
+  } else if (weatherToday.contains("云")) {
     return overcastSky(weatherInfo, context);
   } else {
     return clear(weatherInfo, context);
@@ -86,6 +86,10 @@ WrapperScene rain(WeatherInfo weatherInfo, BuildContext context) {
       Color(0xff424242),
       Color(0xffcfd8dc),
     ],
+
+
+
+
     children: [
       const RainWidget(
         rainConfig: RainConfig(

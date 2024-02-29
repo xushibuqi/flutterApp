@@ -1,6 +1,6 @@
-// This is a.dart basic Flutter widget test.
+// This is loadingExample.dart basic Flutter widget test.
 //
-// To perform an interaction with a.dart widget in your test, use the WidgetTester
+// To perform an interaction with loadingExample.dart widget in your test, use the WidgetTester
 // utility in the flutter_test package. For example, you can send tap and scroll
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
@@ -12,14 +12,14 @@ import 'package:buqi/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a.dart frame.
+    // Build our app and trigger loadingExample.dart frame.
     await tester.pumpWidget(const MyApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
     expect(find.text('1'), findsNothing);
 
-    // Tap the '+' icon and trigger a.dart frame.
+    // Tap the '+' icon and trigger loadingExample.dart frame.
     await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
 

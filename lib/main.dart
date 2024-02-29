@@ -1,12 +1,19 @@
+import 'dart:io';
+
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:buqi/utils/acquireLocation.dart';
+import 'package:buqi/utils/deviceUtil.dart';
+import 'package:buqi/utils/method.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'style/navigationBar.dart';
 import 'style/backgroundColor.dart';
 import 'router/AppRouter.dart';
-import 'utils/acquireLocation.dart';
 
 void main() {
   AppRouter.init();
   runApp(const MyApp());
+  _init();
 }
 
 class MyApp extends StatelessWidget {
@@ -25,6 +32,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
+void _init() {
+  // 这里放置你希望在应用启动时执行的初始化操作
+  if (!Platform.isWindows) {
+    withTimeout(const Duration(seconds: 2), getCityFromCoordinates());
+  }
+  getDeviceInfo();
+}
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
     super.key,
@@ -38,18 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    // 在初始化时调用获取城市信息的方法
-    fetchCityInformation();
-  }
-
-  Future<void> fetchCityInformation() async {
-    try {
-      getCityFromCoordinates();
-      // 在这里可以根据需要更新 UI 或执行其他操作
-    } catch (e) {
-      // 处理异常
-      print('Error fetching city information: $e');
-    }
   }
 
   @override
@@ -59,15 +62,41 @@ class _MyHomePageState extends State<MyHomePage> {
       body: SharedGradientContainer(
         childBuilder: (context) => Stack(
           children: [
-            const Center(
-              child: Text("Your Center Content Here"), // 中间的内容
+            Positioned(
+              top: 200, // 根据需要调整位置
+              left: 0,
+              right: 0,
+              child: Center(
+                child: AnimatedTextKit(
+                  pause: const Duration(milliseconds: 1000), // 动画结束后暂停时间
+                  animatedTexts: [
+                    WavyAnimatedText(
+                      "welcome",
+                      textStyle: const TextStyle(
+                          fontSize: 60, color: Color(0xffede7e1)), // 设置字体大小和颜色
+                    )
+                  ],
+                  repeatForever: true, // 使动画无限循环
+                ),
+              ),
             ),
+
+            Positioned(
+              bottom: 150, // 调整底部间距
+              left: 0,
+              right: 0,
+              child: LoadingAnimationWidget.newtonCradle(
+                color: Colors.white,
+                size: 150,
+              ),
+            ),
+
             // 底部导航栏
             Positioned(
               bottom: 1.5, // 调整底部间距
               left: 0,
               right: 0,
-              child: BottomNavigationBarWidget(1),
+              child: BottomNavigationBarWidget(0),
             ),
           ],
         ),

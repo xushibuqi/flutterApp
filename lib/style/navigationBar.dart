@@ -1,12 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fluro/fluro.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../router/AppRouter.dart';
 import '../utils/acquireLocation.dart';
-import '../utils/permission.dart';
 import '../style/popupMenu.dart';
+import '../utils/method.dart';
 
 class BottomNavigationBarWidget extends StatelessWidget {
   int pageId;
@@ -35,7 +37,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
             icon: FontAwesomeIcons.home,
             onPressed: () {
               // 返回到主页（main.dart 中的页面），并移除之前的所有页面
-              if (pageId == 1) return;
+              if (pageId == 0) return;
               AppRouter.router.navigateTo(context, '/home',
                   replace: true, transition: TransitionType.fadeIn);
               /*
@@ -59,36 +61,58 @@ Fluro库提供了多种过渡动画选项，可以在TransitionType枚举中找�
             },
           ),
           CustomIconButton(
-            icon: FontAwesomeIcons.ghost,
+            icon: FontAwesomeIcons.react,
             onPressed: () {
-              if (pageId == 2) return;
-              AppRouter.router.navigateTo(context, '/first',
+              if (pageId == 1) return;
+              AppRouter.router.navigateTo(context, '/udpConnection',
                   transition: TransitionType.fadeIn);
             },
           ),
           CustomIconButton(
             icon: FontAwesomeIcons.cloudSun,
-            onPressed: () {
-              if (pageId == 3) return;
-            /*  AppRouter.router.navigateTo(context, '/second',
-                  transition: TransitionType.fadeIn);*/
-              showWeatherOptions(context);
+            onPressed: () async {
+              if (pageId == 2) return;
 
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              String address = prefs.getString('address') ?? '';
+              // 用于消除异步 BuildContext  警告
+              if (!context.mounted) return;
+              if (address.isEmpty) {
+                // 如果 address 为空，显示弹窗
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('提示'),
+                    content: const Text('获取位置失败，无法执行跳转操作。请检查权限'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('确定'),
+                      ),
+                    ],
+                  ),
+                );
+              } else {
+                // 如果 address 不为空，执行跳转操作
+                showWeatherOptions(context);
+              }
             },
           ),
           CustomIconButton(
-            icon: FontAwesomeIcons.envelope,
+            icon: Platform.isAndroid ||Platform.isIOS ? FontAwesomeIcons.mobileScreen: FontAwesomeIcons.computer,
             onPressed: () {
-              Map<String, dynamic> data = {'key1': 'value1', 'key2': 'value2'};
-              String jsonData = jsonEncode(data);
-              AppRouter.router.navigateTo(
-                  context, '/details?data=${Uri.encodeComponent(jsonData)}');
+              if (pageId == 3) return;
+              AppRouter.router.navigateTo(context, '/device',  transition: TransitionType.fadeIn);
             },
           ),
           CustomIconButton(
             icon: FontAwesomeIcons.user,
             onPressed: () {
-              AppRouter.router.navigateTo(context, '/another');
+              if (pageId == 4) return;
+              Map<String, dynamic> data = {'key1': 'value1', 'key2': 'value2'};
+              String jsonData = jsonEncode(data);
+              AppRouter.router.navigateTo(context, '/blank',
+                  transition: TransitionType.fadeIn);
             },
           ),
         ],
@@ -114,4 +138,3 @@ class CustomIconButton extends StatelessWidget {
     );
   }
 }
-

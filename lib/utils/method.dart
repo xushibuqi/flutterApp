@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:collection';
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'httpUtil.dart';
@@ -35,4 +37,35 @@ Future<Map<String, dynamic>> getWeatherReport(String adcode) async {
 Future<void> saveToLocal(String key, String value) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString(key, value);
+}
+
+
+// 存储 Map
+Future<void> saveMap(String key,Map<String, dynamic> map) async {
+  final prefs = await SharedPreferences.getInstance();
+  final jsonString = json.encode(map);
+  await prefs.setString(key, jsonString);
+}
+
+// 读取 Map
+Future<LinkedHashMap<String, dynamic>> readMap(String key) async {
+  LinkedHashMap<String, dynamic> map=new LinkedHashMap();
+  final prefs = await SharedPreferences.getInstance();
+  final jsonString = prefs.getString(key);
+  if (jsonString != null) {
+    return json.decode(jsonString) as LinkedHashMap<String, dynamic>;
+  }
+  return map;
+}
+
+
+Future<T> withTimeout<T>(Duration duration, Future<T> future) async {
+  // 创建一个延迟的 Future，等待指定的时间
+  Future<T> timeout = Future.delayed(duration, () {
+    // 当超时时，抛出 TimeoutException 异常
+    throw TimeoutException('Operation timed out after ${duration.inSeconds} seconds');
+  });
+
+  // 使用 Future.race 方法，等待 future 和 timeout 中的任意一个完成
+  return await Future.any([future, timeout]);
 }

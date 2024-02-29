@@ -1,12 +1,13 @@
 import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
-import '../page/view.dart';
-import '../page/view1.dart';
+import '../page/deviceInfo.dart';
+import '../page/weather.dart';
+import '../page/ConnectionPage.dart';
+import '../page/fileTransfer.dart';
 import '../main.dart';
-import 'package:flutter/material.dart';
+import '../test/blank.dart';
 
-import '../page/view2.dart';
 
 class AppRouter {
   static late FluroRouter router;
@@ -19,21 +20,30 @@ class AppRouter {
       handler: Handler(handlerFunc: (context, params) => const MyHomePage()),
     );
     router.define(
-      '/first',
+      '/udpConnection',
       handler:
-      Handler(handlerFunc: (context, params) => const BlCubitCounterPage()),
+      Handler(handlerFunc: (context, params) => const ConnectionPage()),
     );
     router.define(
-      '/second/:cloud',
+      '/weather/:cloud',
       handler: Handler(handlerFunc: (context, params) {
         // 获取查询参数
         String cloud = params['cloud']?.first ?? "real";
 
         // 将参数传递给页面
-        return BlCubitCounterPage1(cloud: cloud);
+        return buildWeather(cloud: cloud);
       }),
     );
-
+    router.define(
+      '/blank',
+      handler:
+      Handler(handlerFunc: (context, params) => const blank()),
+    );
+    router.define(
+      '/device',
+      handler:
+      Handler(handlerFunc: (context, params) =>  deviceInfo()),
+    );
     /* router.define(
       '/second',
       handler: Handler(handlerFunc: (context, params) => BlCubitCounterPage1(type)),
