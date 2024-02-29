@@ -37,7 +37,7 @@ class buildWeather extends StatelessWidget {
               if (weatherSnapshot.connectionState == ConnectionState.done) {
                 // 天气信息获取完成，可以在这里使用天气信息
                 Map<String, dynamic> weatherMap = weatherSnapshot.data ?? {};
-                return weather(weatherMap, address, context,cloud!);
+                return weather(weatherMap, address, context,cloud);
               } else {
                 // 天气信息异步操作未完成，可以显示加载指示器等
                 return CircularProgressIndicator();
