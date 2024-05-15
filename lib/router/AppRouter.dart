@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
+import '../page/FileTransferPage.dart';
 import '../page/deviceInfo.dart';
 import '../page/weather.dart';
 import '../page/ConnectionPage.dart';
-import '../page/fileTransfer.dart';
+import '../page/asd.dart';
 import '../main.dart';
 import '../test/blank.dart';
 
@@ -25,6 +26,14 @@ class AppRouter {
       Handler(handlerFunc: (context, params) => const ConnectionPage()),
     );
     router.define(
+      '/FileTransferPage/:url',
+      handler:
+      Handler(handlerFunc: (context, params) {
+        String url = params['url']?.first ?? "real";
+        return FileTransferPage(url:url);
+      }),
+      );
+      router.define(
       '/weather/:cloud',
       handler: Handler(handlerFunc: (context, params) {
         // 获取查询参数
@@ -42,13 +51,13 @@ class AppRouter {
     router.define(
       '/device',
       handler:
-      Handler(handlerFunc: (context, params) =>  deviceInfo()),
+      Handler(handlerFunc: (context, params) => deviceInfo()),
     );
     /* router.define(
       '/second',
       handler: Handler(handlerFunc: (context, params) => BlCubitCounterPage1(type)),
     );*/
-      router.define(
+    router.define(
       '/details/:id', // Example route with parameter
       handler: Handler(handlerFunc: (_, params) {
         String? idString = params['id']?.first;

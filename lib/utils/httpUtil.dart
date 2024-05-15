@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 
+import '../service/GlobalExceptionHandler.dart';
+
 Future<Map<String, dynamic>> getUrl(
     String url, Map<String, String> queryParams) async {
   Map<String, dynamic> data = HashMap();
@@ -16,6 +18,8 @@ Future<Map<String, dynamic>> getUrl(
     // 请求成功，解析响应数据
     data = json.decode(response.body);
     print("Response data: $data");
+    GlobalExceptionHandler.logCustomError("进行一个get请求 : $url");
+    GlobalExceptionHandler.logCustomError(data.toString());
   } else {
     // 请求失败
     print("Failed to fetch data. Status code: ${response.statusCode}");

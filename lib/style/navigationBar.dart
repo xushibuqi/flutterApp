@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:fluro/fluro.dart';
@@ -99,7 +100,7 @@ Fluro库提供了多种过渡动画选项，可以在TransitionType枚举中找�
             },
           ),
           CustomIconButton(
-            icon: Platform.isAndroid ||Platform.isIOS ? FontAwesomeIcons.mobileScreen: FontAwesomeIcons.computer,
+            icon: !kIsWeb && (Platform.isAndroid || Platform.isIOS) ? FontAwesomeIcons.mobileScreen: FontAwesomeIcons.computer,
             onPressed: () {
               if (pageId == 3) return;
               AppRouter.router.navigateTo(context, '/device',  transition: TransitionType.fadeIn);

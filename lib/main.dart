@@ -1,17 +1,18 @@
-import 'dart:io';
-
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:buqi/service/GlobalExceptionHandler.dart';
 import 'package:buqi/utils/acquireLocation.dart';
 import 'package:buqi/utils/deviceUtil.dart';
-import 'package:buqi/utils/method.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'style/navigationBar.dart';
-import 'style/backgroundColor.dart';
+import 'dart:io';
 import 'router/AppRouter.dart';
+import 'style/backgroundColor.dart';
+import 'style/navigationBar.dart';
 
 void main() {
   AppRouter.init();
+  GlobalExceptionHandler.setupExceptionHandler(); // 异常处理
   runApp(const MyApp());
   _init();
 }
@@ -34,8 +35,8 @@ class MyApp extends StatelessWidget {
 
 void _init() {
   // 这里放置你希望在应用启动时执行的初始化操作
-  if (!Platform.isWindows) {
-    withTimeout(const Duration(seconds: 2), getCityFromCoordinates());
+  if (!kIsWeb && (Platform.isAndroid || Platform.isIOS) ) {
+    getCityFromCoordinates();
   }
   getDeviceInfo();
 }
