@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
-import '../page/FileTransferPage.dart';
+import '../page/FileTransferPageMobile.dart';
+import '../page/FileTransferPagePc.dart';
 import '../page/deviceInfo.dart';
 import '../page/weather.dart';
 import '../page/ConnectionPage.dart';
 import '../page/asd.dart';
 import '../main.dart';
 import '../test/blank.dart';
-
 
 class AppRouter {
   static late FluroRouter router;
@@ -23,17 +23,23 @@ class AppRouter {
     router.define(
       '/udpConnection',
       handler:
-      Handler(handlerFunc: (context, params) => const ConnectionPage()),
+          Handler(handlerFunc: (context, params) => const ConnectionPage()),
     );
     router.define(
-      '/FileTransferPage/:url',
-      handler:
-      Handler(handlerFunc: (context, params) {
-        String url = params['url']?.first ?? "real";
-        return FileTransferPage(url:url);
+      '/FileTransferPageMobile/:url',
+      handler: Handler(handlerFunc: (context, params) {
+        String url = params['url']?.first ?? "unknown";
+        return FileTransferPageMobile(url: url);
       }),
-      );
-      router.define(
+    );
+    router.define(
+      '/FileTransferPagePc/:url',
+      handler: Handler(handlerFunc: (context, params) {
+        String url = params['url']?.first ?? "unknown";
+        return FileTransferPagePc(url: url);
+      }),
+    );
+    router.define(
       '/weather/:cloud',
       handler: Handler(handlerFunc: (context, params) {
         // 获取查询参数
@@ -45,13 +51,11 @@ class AppRouter {
     );
     router.define(
       '/blank',
-      handler:
-      Handler(handlerFunc: (context, params) => const blank()),
+      handler: Handler(handlerFunc: (context, params) => const blank()),
     );
     router.define(
       '/device',
-      handler:
-      Handler(handlerFunc: (context, params) => deviceInfo()),
+      handler: Handler(handlerFunc: (context, params) => deviceInfo()),
     );
     /* router.define(
       '/second',
@@ -70,7 +74,7 @@ class AppRouter {
       handler: Handler(handlerFunc: (_, params) {
         String? dataString = params['data']?.first;
         Map<String, dynamic>? data =
-        dataString != null ? jsonDecode(dataString) : null;
+            dataString != null ? jsonDecode(dataString) : null;
         //   return BlCubitCounterPage2(data: data ?? {});
       }),
     );

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:buqi/service/UdpDiscoveryService.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,21 @@ class _DiscoveryPageState extends State<ConnectionPage> {
         body: StreamBuilder<String>(
           stream: _udpDiscoveryService.deviceStream,
           builder: (context, snapshot) {
+            //  放在前边 避免 因为界面无法交互 没有构建完成 强制中断导致的报错
+            if (snapshot.hasData) {
+              String deviceInfo = snapshot.data!;
+              if (deviceInfo.startsWith("*&@")) {
+                String ip = deviceInfo.split(",")[0].split("'")[1];
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  AppRouter.router.navigateTo(
+                      context,
+                      Platform.isIOS || Platform.isAndroid
+                          ? '/FileTransferPageMobile/$ip'
+                          : '/FileTransferPagePc/$ip',
+                      transition: TransitionType.fadeIn);
+                });
+              }
+            }
             return _udpDiscoveryService.devices.isEmpty
                 ? const Center(
                     child: Text('未发现局域网设备'),
@@ -55,10 +72,15 @@ class _DiscoveryPageState extends State<ConnectionPage> {
                           title: Text(deviceInfo),
                           trailing: ElevatedButton(
                             onPressed: () {
-                              String ip = deviceInfo.split(",")[0].split("'")[1];
-                             _udpDiscoveryService.sendMsg(ip);
+                              String ip =
+                                  deviceInfo.split(",")[0].split("'")[1];
+                              _udpDiscoveryService.sendMsg(ip);
+                              dispose();
                               AppRouter.router.navigateTo(
-                                  context, '/FileTransferPage/$ip',
+                                  context,
+                                  Platform.isIOS || Platform.isAndroid
+                                      ? '/FileTransferPageMobile/$ip'
+                                      : '/FileTransferPagePc/$ip',
                                   transition: TransitionType.fadeIn);
                             },
                             child: const Text('连接'),

@@ -21,7 +21,7 @@ class UdpDiscoveryService {
       StreamController<String>();
   final List<String> devices = [];
   final Map<String, int> times = new HashMap();
-
+  late Timer _timer;
   UdpDiscoveryService();
 
   void start() async {
@@ -61,16 +61,18 @@ class UdpDiscoveryService {
       port,
     );
     _socket?.broadcastEnabled = true;
-    Timer.periodic(Duration(seconds: 3), (timer) {
+    _timer=Timer.periodic(Duration(seconds: 3), (timer) {
       sendBroadcast();
     });
     _socket?.listen((event) {
       Datagram? datagram = _socket?.receive();
       if (datagram != null) {
         String message = String.fromCharCodes(datagram.data).trim();
+
         if(message=="*&@"){
           //收到链接信息
-
+          devicestreamController.add('*&@  :  ${datagram.address} ' );
+          devices.add('*&@  :  ${datagram.address} ' );
 
         }else{
           String deviceInfo = '${datagram.address}: $message';
@@ -102,6 +104,7 @@ class UdpDiscoveryService {
 
   void stop() {
     _socket?.close();
+    _timer.cancel();
     devicestreamController.close();
   }
 
