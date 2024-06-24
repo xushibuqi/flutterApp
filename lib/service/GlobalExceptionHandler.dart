@@ -24,8 +24,8 @@ class GlobalExceptionHandler {
   }
 
   static Future<String> _getLogPath() async {
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String appDocPath = appDocDir.path;
+    Directory? appDocDir = await getExternalStorageDirectory();
+    String appDocPath = appDocDir!.path;
     return '$appDocPath/buqi/error_log.txt';
   }
 

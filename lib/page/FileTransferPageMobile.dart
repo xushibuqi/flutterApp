@@ -195,8 +195,7 @@ class _FileTransferPageState extends State<FileTransferPageMobile> {
                         itemBuilder: (BuildContext context, int index) {
                           return ListTile(
                             title: Text(
-                              path.basename(_receivedFiles[index].path),
-                              style: const TextStyle(fontSize: 16),
+                                _receivedFiles[index].path
                             ),
                             trailing: Text('${_receiveProgress[index]}%'),
                           );
