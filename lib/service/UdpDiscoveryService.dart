@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 
-
 import 'package:fluro/fluro.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,18 +21,13 @@ class UdpDiscoveryService {
   final List<String> devices = [];
   final Map<String, int> times = new HashMap();
   late Timer _timer;
+
   UdpDiscoveryService();
 
   void start() async {
-
-
-
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     discoveryMessage = prefs.getString('device') ?? '';
     InternetAddress ip = InternetAddress.anyIPv4;
-
-
 
     //   为了在pc上 多个ip拿出在用的IP地址 目前规则是192.168.3
     if (!kIsWeb && Platform.isWindows) {
@@ -55,39 +49,53 @@ class UdpDiscoveryService {
         });
       });
     }
+    // ios ip
+
+    if (Platform.isIOS) {
+      for (var interface in await NetworkInterface.list()) {
+        // 过滤获取特定的网络接口，例如 'en0' 是常见的 Wi-Fi 接口名称
+        if (interface.name == 'en0') {
+          for (var addr in interface.addresses) {
+            if (addr.type == InternetAddressType.IPv4) {
+              ip = addr;
+            }
+          }
+        }
+      }
+    }
 
     _socket = await RawDatagramSocket.bind(
       ip,
       port,
     );
     _socket?.broadcastEnabled = true;
-    _timer=Timer.periodic(Duration(seconds: 3), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       sendBroadcast();
+      int timestamp = DateTime.now().millisecondsSinceEpoch;
+      //  判断旧数据是否过期
+      times.entries
+          .where((entry) => timestamp - entry.value > 7000)
+          .toList() // 转为列表，避免并发修改异常
+          .forEach((entry) {
+        removeDevice(entry.key);
+        times.remove(entry.key);
+      });
     });
     _socket?.listen((event) {
       Datagram? datagram = _socket?.receive();
       if (datagram != null) {
         String message = String.fromCharCodes(datagram.data).trim();
 
-        if(message=="*&@"){
+        if (message == "*&@") {
           //收到链接信息
-          devicestreamController.add('*&@  :  ${datagram.address} ' );
-          devices.add('*&@  :  ${datagram.address} ' );
-
-        }else{
+          devicestreamController.add('*&@  :  ${datagram.address} ');
+          devices.add('*&@  :  ${datagram.address} ');
+        } else {
           String deviceInfo = '${datagram.address}: $message';
 
           DateTime now = DateTime.now();
           int timestamp = now.millisecondsSinceEpoch;
 
-          // 每次拿到新数据 判断旧数据是否过期
-          times.entries
-              .where((entry) => timestamp - entry.value > 7000)
-              .toList() // 转为列表，避免并发修改异常
-              .forEach((entry) {
-            removeDevice(entry.key);
-            times.remove(entry.key);
-          });
           times[deviceInfo] = timestamp;
           if (!devices.contains(deviceInfo)) {
             devices.add(deviceInfo);
@@ -95,11 +103,8 @@ class UdpDiscoveryService {
           // 更新流 用于通知重构界面
           devicestreamController.add(deviceInfo);
         }
-
       }
     });
-
-
   }
 
   void stop() {
@@ -123,9 +128,9 @@ class UdpDiscoveryService {
     _socket!.send(
         discoveryMessage.codeUnits, InternetAddress(broadcastAddress), port);
   }
+
   void sendMsg(String ip) {
-    _socket!.send(
-        "*&@".codeUnits, InternetAddress(ip), port);
+    _socket!.send("*&@".codeUnits, InternetAddress(ip), port);
   }
 
   Stream<String> get deviceStream => devicestreamController.stream;
