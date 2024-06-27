@@ -17,9 +17,6 @@ Future<Map<String, dynamic>> getUrl(
   if (response.statusCode == 200) {
     // 请求成功，解析响应数据
     data = json.decode(response.body);
-    print("Response data: $data");
-    GlobalExceptionHandler.logCustomError("进行一个get请求 : $url");
-    GlobalExceptionHandler.logCustomError(data.toString());
   } else {
     // 请求失败
     print("Failed to fetch data. Status code: ${response.statusCode}");

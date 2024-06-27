@@ -7,6 +7,9 @@ import 'package:permission_handler/permission_handler.dart' as perm;
 // 获取位置权限
 Future<void> requestLocationPermission() async {
   try {
+
+
+
     Location location = Location();
 
     bool serviceEnabled;

@@ -23,9 +23,15 @@ class buildWeather extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, String>?>(
       // 使用 FutureBuilder 处理异步操作
+
       future: getAddress(),
       builder: (context, snapshot) {
+        appBar: AppBar(
+          title: const Text('天气'),
+          backgroundColor: Colors.transparent,
+        );
         if (snapshot.connectionState == ConnectionState.done) {
+
           // 异步操作完成，获取到地址信息
           Map<String, String> map = snapshot.data ?? {};
           String adcode = map["adcode"] ?? "";
@@ -52,3 +58,4 @@ class buildWeather extends StatelessWidget {
     );
   }
 }
+

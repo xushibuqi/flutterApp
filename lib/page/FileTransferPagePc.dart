@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../service/FileTransferService.dart';
 import '../style/backgroundColor.dart';
+import '../style/popupMenu.dart';
 import '../utils/SocketUtil.dart';
 import 'package:path/path.dart' as path;
 
@@ -21,10 +22,10 @@ class FileTransferPagePc extends StatefulWidget {
 
 class _FileTransferPageState extends State<FileTransferPagePc> {
   String get _remoteIp => widget.url;
-  bool _isConnected = false;
+  bool _isConnected = true;
   final List<File> _selectedFiles = [];
   final List<File> _receivedFiles = [];
-  final List<int> _receiveProgress = [];
+  final List<String> _receiveProgress = [];
   late FileTransferService _fileTransferService;
   late Timer _timer;
 
@@ -49,7 +50,9 @@ class _FileTransferPageState extends State<FileTransferPagePc> {
       });
     });
 
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+      bool state = await _fileTransferService.isConnect(_remoteIp);
+      _isConnected = state;
       setState(() {});
     });
   }
@@ -98,6 +101,7 @@ class _FileTransferPageState extends State<FileTransferPagePc> {
                           const Spacer(),
                           IconButton(
                             onPressed: () {
+
                               _selectedFiles.clear();
                               setState(() {});
                             },
@@ -158,6 +162,8 @@ class _FileTransferPageState extends State<FileTransferPagePc> {
                           Expanded(
                             child: ElevatedButton(
                               onPressed: () {
+                                if(!_isConnected)  showAlertDialog(context, '当前未连接 请检查对方设备是否在线');
+
                                 _sendFiles(_selectedFiles);
                               },
                               child: const Text(

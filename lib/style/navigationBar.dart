@@ -80,19 +80,7 @@ Fluro库提供了多种过渡动画选项，可以在TransitionType枚举中找�
               if (!context.mounted) return;
               if (address.isEmpty) {
                 // 如果 address 为空，显示弹窗
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('提示'),
-                    content: const Text('获取位置失败，无法执行跳转操作。请检查权限'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text('确定'),
-                      ),
-                    ],
-                  ),
-                );
+                showAlertDialog(context, '获取位置失败，无法执行跳转操作。请检查权限');
               } else {
                 // 如果 address 不为空，执行跳转操作
                 showWeatherOptions(context);
@@ -100,10 +88,13 @@ Fluro库提供了多种过渡动画选项，可以在TransitionType枚举中找�
             },
           ),
           CustomIconButton(
-            icon: !kIsWeb && (Platform.isAndroid || Platform.isIOS) ? FontAwesomeIcons.mobileScreen: FontAwesomeIcons.computer,
+            icon: !kIsWeb && (Platform.isAndroid || Platform.isIOS)
+                ? FontAwesomeIcons.mobileScreen
+                : FontAwesomeIcons.computer,
             onPressed: () {
               if (pageId == 3) return;
-              AppRouter.router.navigateTo(context, '/device',  transition: TransitionType.fadeIn);
+              AppRouter.router.navigateTo(context, '/device',
+                  transition: TransitionType.fadeIn);
             },
           ),
           CustomIconButton(

@@ -8,7 +8,7 @@ class FileTransferService {
   ServerSocket? _serverSocket;
   Socket? _clientSocket;
 
-  Future<void> startServer(Function(File, int) onProgressUpdate) async {
+  Future<void> startServer(Function(File, String) onProgressUpdate) async {
     _serverSocket = await ServerSocket.bind(InternetAddress.anyIPv4, 55555);
     _serverSocket!.listen((Socket socket) {
       _handleConnection(socket, onProgressUpdate);
@@ -16,7 +16,7 @@ class FileTransferService {
   }
 
   Future<void> _handleConnection(
-      Socket socket, Function(File, int) onProgressUpdate) async {
+      Socket socket, Function(File, String) onProgressUpdate) async {
     int bytesRead = 0;
     bool received = false;
 
@@ -46,20 +46,22 @@ class FileTransferService {
         file = File(filePath);
         sink = file.openWrite(mode: FileMode.append);
       } else {
-        print(data.length);
-        if (String.fromCharCodes(data) == "EOF" && bytesRead >= fileSize) {
-          // 文件接收完成
-          await sink.flush();
-          await sink.close();
-          onProgressUpdate(file, 100);
-          socket.destroy();
-        } else {
-          sink.add(data);
-          bytesRead += data.length;
-          print(data.length);
-          // 更新进度
-          int progress = ((bytesRead / fileSize) * 100).toInt();
-          onProgressUpdate(file, progress);
+        try {
+          if (String.fromCharCodes(data) == "EOF" && bytesRead >= fileSize) {
+            // 文件接收完成
+            await sink.flush();
+            await sink.close();
+            onProgressUpdate(file, "100");
+            socket.destroy();
+          } else {
+            sink.add(data);
+            bytesRead += data.length;
+            // 更新进度
+            String progress = ((bytesRead / fileSize) * 100).toInt().toString();
+            onProgressUpdate(file, progress);
+          }
+        } catch (e) {
+          onProgressUpdate(file, "error");
         }
       }
     });
@@ -103,6 +105,7 @@ class FileTransferService {
     Socket? clientSocket;
     try {
       clientSocket = await Socket.connect(ip, 55555);
+
       String fileName = path.basename(file.path);
       final fileSize = await file.length();
       final Uint8List fileNameBytes =
@@ -128,6 +131,19 @@ class FileTransferService {
       // 确保Socket被关闭
       clientSocket?.close();
     }
+  }
+
+  Future<bool> isConnect(String ip) async {
+    Socket? socket;
+    try {
+      socket = await Socket.connect(ip, 55555);
+    } catch (e) {
+      return false;
+    } finally {
+      socket?.close();
+    }
+
+    return true;
   }
 
   void dispose() {

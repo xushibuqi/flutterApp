@@ -4,6 +4,24 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../router/AppRouter.dart';
 import 'navigationBar.dart';
+// 弹窗提醒
+
+void showAlertDialog(BuildContext context, String message) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('提示'),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('确定'),
+        ),
+      ],
+    ),
+  );
+}
+
 
 //  点击弹出方框
 void showWeatherOptions(BuildContext context) {

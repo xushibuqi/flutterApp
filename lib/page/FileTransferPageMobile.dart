@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../service/FileTransferService.dart';
+import '../style/SharedAppBar.dart';
 import '../style/backgroundColor.dart';
 import '../utils/SocketUtil.dart';
 import 'package:path/path.dart' as path;
@@ -24,7 +25,7 @@ class _FileTransferPageState extends State<FileTransferPageMobile> {
   bool _isConnected = false;
   final List<File> _selectedFiles = [];
   final List<File> _receivedFiles = [];
-  final List<int> _receiveProgress = [];
+  final List<String> _receiveProgress = [];
   late FileTransferService _fileTransferService;
   late Timer _timer;
 
@@ -49,7 +50,11 @@ class _FileTransferPageState extends State<FileTransferPageMobile> {
       });
     });
 
-    _timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) async {
+
+      bool state = await _fileTransferService.isConnect(_remoteIp);
+      _isConnected = state;
+
       setState(() {});
     });
   }
@@ -67,9 +72,8 @@ class _FileTransferPageState extends State<FileTransferPageMobile> {
     return SharedGradientContainer(
       childBuilder: (context) => Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          title: Text('文件传输 $ip'),
-          backgroundColor: Colors.transparent,
+        appBar: SharedAppBar(
+          title:'文件传输 $ip',
         ),
         body: Column(
           children: [

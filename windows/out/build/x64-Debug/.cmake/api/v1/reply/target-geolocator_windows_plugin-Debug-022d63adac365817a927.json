@@ -1,0 +1,321 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "plugins/geolocator_windows/geolocator_windows_plugin.dll"
+		},
+		{
+			"path" : "plugins/geolocator_windows/geolocator_windows_plugin.lib"
+		},
+		{
+			"path" : "plugins/geolocator_windows/geolocator_windows_plugin.pdb"
+		}
+	],
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"target_link_libraries",
+			"add_dependencies",
+			"target_compile_options",
+			"apply_standard_settings",
+			"target_compile_definitions",
+			"add_definitions",
+			"include_directories",
+			"target_compile_features"
+		],
+		"files" : 
+		[
+			"flutter/ephemeral/.plugin_symlinks/geolocator_windows/windows/CMakeLists.txt",
+			"flutter/CMakeLists.txt",
+			"CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 48,
+				"parent" : 0
+			},
+			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 60,
+				"parent" : 0
+			},
+			{
+				"file" : 1
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 39,
+				"parent" : 3
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 40,
+				"parent" : 3
+			},
+			{
+				"command" : 4,
+				"file" : 0,
+				"line" : 53,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 2,
+				"line" : 42,
+				"parent" : 6
+			},
+			{
+				"command" : 3,
+				"file" : 2,
+				"line" : 43,
+				"parent" : 6
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 56,
+				"parent" : 0
+			},
+			{
+				"command" : 5,
+				"file" : 0,
+				"line" : 57,
+				"parent" : 0
+			},
+			{
+				"file" : 2
+			},
+			{
+				"command" : 6,
+				"file" : 2,
+				"line" : 33,
+				"parent" : 11
+			},
+			{
+				"command" : 5,
+				"file" : 2,
+				"line" : 45,
+				"parent" : 6
+			},
+			{
+				"command" : 5,
+				"file" : 2,
+				"line" : 44,
+				"parent" : 6
+			},
+			{
+				"command" : 7,
+				"file" : 0,
+				"line" : 46,
+				"parent" : 0
+			},
+			{
+				"command" : 8,
+				"file" : 2,
+				"line" : 41,
+				"parent" : 6
+			},
+			{
+				"command" : 8,
+				"file" : 0,
+				"line" : 55,
+				"parent" : 0
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1 -std:c++20"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "/W4"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "/WX"
+				},
+				{
+					"backtrace" : 7,
+					"fragment" : "/wd\\\"4100\\\""
+				},
+				{
+					"backtrace" : 8,
+					"fragment" : "/EHsc"
+				},
+				{
+					"backtrace" : 9,
+					"fragment" : "/await:strict"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 10,
+					"define" : "FLUTTER_PLUGIN_IMPL"
+				},
+				{
+					"backtrace" : 12,
+					"define" : "UNICODE"
+				},
+				{
+					"backtrace" : 13,
+					"define" : "_DEBUG"
+				},
+				{
+					"backtrace" : 14,
+					"define" : "_HAS_EXCEPTIONS=0"
+				},
+				{
+					"backtrace" : 12,
+					"define" : "_UNICODE"
+				},
+				{
+					"define" : "geolocator_windows_plugin_EXPORTS"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 2,
+					"path" : "D:/ideaProject/buqi/windows/flutter/ephemeral"
+				},
+				{
+					"backtrace" : 2,
+					"path" : "D:/ideaProject/buqi/windows/flutter/ephemeral/cpp_client_wrapper/include"
+				},
+				{
+					"backtrace" : 15,
+					"isSystem" : true,
+					"path" : "D:/ideaProject/buqi/windows/out/build/x64-Debug/include"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					16,
+					17
+				],
+				"standard" : "20"
+			},
+			"sourceIndexes" : 
+			[
+				1,
+				2
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 2,
+			"id" : "flutter_wrapper_plugin::@2bb09fbb03a373b2cb34"
+		},
+		{
+			"backtrace" : 5,
+			"id" : "flutter_assemble::@2bb09fbb03a373b2cb34"
+		}
+	],
+	"id" : "geolocator_windows_plugin::@246349889b4a55bdeebd",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "/machine:x64 /debug /INCREMENTAL",
+				"role" : "flags"
+			},
+			{
+				"backtrace" : 2,
+				"fragment" : "flutter\\flutter_wrapper_plugin.lib",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 4,
+				"fragment" : "D:\\ideaProject\\buqi\\windows\\flutter\\ephemeral\\flutter_windows.dll.lib",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+				"role" : "libraries"
+			}
+		],
+		"language" : "CXX"
+	},
+	"name" : "geolocator_windows_plugin",
+	"nameOnDisk" : "geolocator_windows_plugin.dll",
+	"paths" : 
+	{
+		"build" : "plugins/geolocator_windows",
+		"source" : "flutter/ephemeral/.plugin_symlinks/geolocator_windows/windows"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				0,
+				3,
+				4
+			]
+		},
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				1,
+				2
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"path" : "flutter/ephemeral/.plugin_symlinks/geolocator_windows/windows/include/geolocator_windows/geolocator_windows.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "flutter/ephemeral/.plugin_symlinks/geolocator_windows/windows/geolocator_windows.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "flutter/ephemeral/.plugin_symlinks/geolocator_windows/windows/geolocator_plugin.cpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "flutter/ephemeral/.plugin_symlinks/geolocator_windows/windows/geolocator_plugin.h",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "flutter/ephemeral/.plugin_symlinks/geolocator_windows/windows/geolocator_enums.h",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "SHARED_LIBRARY"
+}
